@@ -1,27 +1,24 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { DirectionsRenderer, GoogleMap, MarkerF, OverlayView, OverlayViewF } from '@react-google-maps/api';
 import { SourceContext } from '@/context/SourceContext';
+import Image from 'next/image'
 import { DestinationContext } from '@/context/DestinationContext';
-import { WebSocketContext } from '@/context/WebSocketContext';  // Added for WebSocket context
-import Image from 'next/image';
 
 function GoogleMapSection() {
     const containerStyle = {
         width: '100%',
-        height: '100vh',
+        height: '100vh'
     };
 
     const { source, setSource } = useContext(SourceContext);
     const { destination } = useContext(DestinationContext);
-    const { location } = useContext(WebSocketContext);  // Get live location from WebSocket
 
     const [map, setMap] = useState(null);
-    const [currentPosition, setCurrentPosition] = useState(location || null); // Initialize live location from WebSocket
+    const [currentPosition, setCurrentPosition] = useState(null); // Track live location
     const [directionRoutePoints, setDirectionRoutePoints] = useState([]);
     const [routeAlertShown, setRouteAlertShown] = useState(false);
     const [heading, setHeading] = useState(0); // Track compass heading (direction)
 
-    // Pan to source location and calculate directions when source/destination changes
     useEffect(() => {
         if (source?.lat && map) {
             map.panTo({ lat: source.lat, lng: source.lng });
@@ -31,12 +28,25 @@ function GoogleMapSection() {
         }
     }, [source, destination]);
 
-    // Watch for location updates through WebSocket and update the marker position
     useEffect(() => {
-        if (location) {
-            setCurrentPosition({ lat: location.lat, lng: location.lng });
+        // Enable geolocation tracking
+        if (navigator.geolocation) {
+            const watchId = navigator.geolocation.watchPosition(
+                (position) => {
+                    const { latitude, longitude, heading } = position.coords;
+                    setCurrentPosition({ lat: latitude, lng: longitude });
+                    if (heading) setHeading(heading); // Update the compass direction
+                },
+                (error) => {
+                    console.error("Error getting position: ", error);
+                },
+                { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
+            );
+
+            // Clean up the geolocation watch on component unmount
+            return () => navigator.geolocation.clearWatch(watchId);
         }
-    }, [location]);
+    }, []);
 
     const directionRoute = () => {
         const DirectionsService = new google.maps.DirectionsService();
@@ -44,7 +54,7 @@ function GoogleMapSection() {
             {
                 origin: { lat: source.lat, lng: source.lng },
                 destination: { lat: destination.lat, lng: destination.lng },
-                travelMode: google.maps.TravelMode.DRIVING,
+                travelMode: google.maps.TravelMode.DRIVING
             },
             (result, status) => {
                 if (status === google.maps.DirectionsStatus.OK) {
@@ -90,37 +100,11 @@ function GoogleMapSection() {
         setMap(null);
     };
 
-    const handleCurrentLocation = () => {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                const { latitude, longitude } = position.coords;
-                setCurrentPosition({
-                    lat: latitude,
-                    lng: longitude
-                });
-                setSource({
-                    lat: latitude,
-                    lng: longitude,
-                    label: 'Current Location'
-                });
-            },
-            (error) => {
-                console.error("Error getting location: ", error);
-                alert("Unable to retrieve your location. Please ensure location services are enabled.");
-            },
-            { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
-        );
-    } else {
-        alert("Geolocation is not supported by your browser.");
-    }
-};
-
     return (
         <GoogleMap
             mapContainerStyle={containerStyle}
             center={{ lat: source?.lat || -3.745, lng: source?.lng || -38.523 }}
-            zoom={10}
+            zoom={15}
             onLoad={onLoad}
             onUnmount={onUnmount}
             options={{ mapId: 'bf5e92fe30f6eda' }} // Retain custom map styling
@@ -131,7 +115,7 @@ function GoogleMapSection() {
                     position={currentPosition}
                     icon={{
                         url: '/live.png', // Use an icon to represent current location
-                        scaledSize: { width: 30, height: 30 },
+                        scaledSize: { width: 30, height: 30 }
                     }}
                 >
                     <OverlayViewF position={currentPosition} mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}>
@@ -144,7 +128,7 @@ function GoogleMapSection() {
 
             {/* Compass for showing direction */}
             {currentPosition && (
-                <div className='absolute top-10 right-0 p-2'>
+                <div className='absolute top-11 right-2 p-2'>
                     <div
                         style={{
                             transform: `rotate(${heading}deg)`,
@@ -153,7 +137,7 @@ function GoogleMapSection() {
                             padding: '10px',
                         }}
                     >
-                        <Image src='/compass-icon.png' width={50} height={50} alt='Compass' />
+                        <Image src='/compass-icon.png' width={50} height={50} alt="Compass" />
                     </div>
                 </div>
             )}
@@ -163,7 +147,7 @@ function GoogleMapSection() {
                     position={{ lat: source.lat, lng: source.lng }}
                     icon={{
                         url: '/src.png',
-                        scaledSize: { width: 20, height: 20 },
+                        scaledSize: { width: 20, height: 20 }
                     }}
                 >
                     <OverlayViewF position={{ lat: source.lat, lng: source.lng }} mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}>
@@ -179,7 +163,7 @@ function GoogleMapSection() {
                     position={{ lat: destination.lat, lng: destination.lng }}
                     icon={{
                         url: '/destination.png',
-                        scaledSize: { width: 20, height: 20 },
+                        scaledSize: { width: 20, height: 20 }
                     }}
                 >
                     <OverlayViewF position={{ lat: destination.lat, lng: destination.lng }} mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}>
@@ -197,9 +181,9 @@ function GoogleMapSection() {
                         polylineOptions: {
                             strokeColor: 'blue',
                             strokeOpacity: 1,
-                            strokeWeight: 8,
+                            strokeWeight: 8
                         },
-                        suppressMarkers: true, // Hide default markers to use custom ones
+                        suppressMarkers: true // Hide default markers to use custom ones
                     }}
                 />
             )}

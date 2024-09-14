@@ -24,9 +24,9 @@ function CarListOptions({distance}) {
           <CarListItem car={item} distance={distance}/>
         </div>
       ))}
-      {selectedCar?.name? <div className='flex justify-between fixed bottom-5 bg-white p-3 shadow-xl w-full md:w-[30%] border-[2px] items-center'>
+      {selectedCar?.name? <div className='flex justify-between fixed bottom-5 bg-white p-3 shadow-xl w-full md:w-[30%] border-[2px] items-center z-10'>
         <h2>Make Payment For</h2>
-        <button className='p-3 bg-black text-white rounded-lg text-center'
+        <button className='p-3 bg-black text-white rounded-lg text-center '
         onClick={()=>{
           alert(` ${selectedCar.name} will reach you in ${(distance*380/75).toFixed(2)} minutes`);
         }}

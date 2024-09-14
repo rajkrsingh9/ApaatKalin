@@ -4,7 +4,7 @@ import Image from "next/image";
 export default function Page() {
   return (
     <div>
-      <Image src='/ambulance.webp' width={900} height={1000}
+      <Image src='/ambulance.webp' alt='ambulance' width={900} height={1000}
       className='object-contain h-full w-full'/>
       <div className='absolute top-8 right-0'>
       <SignIn />

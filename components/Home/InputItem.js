@@ -64,7 +64,7 @@ function InputItem({ type }) {
 
     return (
         <div className="bg-slate-200 p-3 rounded-lg mt-3 flex items-center gap-4 relative">
-            <Image src={type === 'source' ? '/src.png' : '/destination.png'} width={15} height={15} />
+            <Image src={type === 'source' ? '/src.png' : '/destination.png'} alt='location' width={15} height={15} />
             <GooglePlacesAutocomplete
                 selectProps={{
                     value,

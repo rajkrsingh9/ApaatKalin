@@ -1,6 +1,5 @@
 import localFont from "next/font/local";
 import React from 'react';
-import { WebSocketProvider } from '@/context/WebSocketContext';
 import { Inter, Montserrat } from 'next/font/google';
 import {
   ClerkProvider,
@@ -37,11 +36,11 @@ export default function RootLayout({ children }) {
     <ClerkProvider>
       <html lang="en">
         <body className={inter.className}>
-        <WebSocketProvider>
+        
           <Header/>
           
           {children} 
-          </WebSocketProvider>
+          
           
         </body>
       </html>
