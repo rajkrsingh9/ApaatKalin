@@ -1,3 +1,14 @@
+# Apaatkalin – Emergency Vehicle Traffic Clearance System
+Apaatkalin is a real-time traffic management solution designed to assist emergency vehicles, ensuring congestion-free routes and reducing response times. The system dynamically adjusts traffic signals to green when an emergency vehicle is within 300-500 meters of an intersection, providing smooth passage. Additionally, it features a quick-call option for emergency services, allowing users to summon ambulances, fire brigades, or police with ease.
+
+## Features
+Dynamic Traffic Signal Control: Automatically turns traffic lights green for emergency vehicles.
+Real-Time Route Optimization: Provides the most efficient route for emergency vehicles.
+Quick Emergency Call: Easily request ambulances, fire brigades, or police.
+## Technologies Used
+Google Maps API for real-time route navigation and traffic signal integration.
+Next.js and React for building the user interface and managing the application.
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
