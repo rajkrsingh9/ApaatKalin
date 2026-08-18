@@ -59,5 +59,17 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 ![image](https://github.com/user-attachments/assets/893a8112-5d4d-4cc8-9d18-6d6d7afc45a4)
 
+## Clerk Setup
+
+This project uses Clerk for authentication. Add your publishable key to a local environment file:
+
+Create a `.env.local` file at the project root and add:
+
+```
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_live_... # get from https://dashboard.clerk.com/last-active?path=api-keys
+```
+
+Restart the dev server after adding the variable.
+
 
 
