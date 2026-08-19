@@ -10,11 +10,11 @@ function CarListOptions({distance}) {
   const router=useRouter();
 
   return (
-    <div className='mt-5 p-5 overflow-auto h-[250px] '>
+    <div className='mt-5 p-5 overflow-auto h-[50vh] '>
       <h2 className='text-[22px] font-bold'>Call for 
       </h2>
       {CarListData.map((item, index)=>(
-        <div className={`p-5 px-4 cursor-pointer rounded-md border-black 
+        <div className={`px-4 cursor-pointer rounded-md border-black 
           ${activeIndex==index?'border-[2px]':null}`}
         onClick={()=>{
           setActiveIndex(index)
@@ -25,7 +25,7 @@ function CarListOptions({distance}) {
         </div>
       ))}
       {selectedCar?.name? <div className='flex justify-between fixed bottom-5 bg-white p-3 shadow-xl w-full md:w-[30%] border-[2px] items-center z-10'>
-        <h2>Make Payment For</h2>
+        <h2 className='text-black'> Make Payment For</h2>
         <button className='p-3 bg-black text-white rounded-lg text-center '
         onClick={()=>{
           alert(` ${selectedCar.name} will reach you in ${(distance*380/75).toFixed(2)} minutes`);

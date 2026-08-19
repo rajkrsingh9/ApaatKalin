@@ -3,21 +3,93 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f8fafc;
+  --foreground: #0f172a;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  color: var(--foreground);
+  margin: 0;
+  min-height: 100vh;
   background: var(--background);
+  color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button, input {
+  font: inherit;
+}
+
+.traffic-signal {
+  position: relative;
+  width: 26px;
+  height: 70px;
+  padding: 4px 2px;
+  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.9);
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.3);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.traffic-signal::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: -8px;
+  width: 16px;
+  height: 38px;
+  transform: translateX(-50%);
+  background: rgba(15, 23, 42, 0.8);
+  border-radius: 3px 3px 0 0;
+}
+
+.traffic-signal__light {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  opacity: 0.2;
+  background: #cbd5e1;
+  transition: opacity 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease;
+}
+
+.traffic-signal.red .traffic-signal__red,
+.traffic-signal.amber .traffic-signal__amber,
+.traffic-signal.green .traffic-signal__green {
+  opacity: 1;
+  transform: scale(1.08);
+}
+
+.traffic-signal.red .traffic-signal__red {
+  background: #ef4444;
+  box-shadow: 0 0 14px rgba(239, 68, 68, 0.9);
+}
+
+.traffic-signal.amber .traffic-signal__amber {
+  background: #fbbf24;
+  box-shadow: 0 0 14px rgba(251, 191, 36, 0.9);
+}
+
+.traffic-signal.green .traffic-signal__green {
+  background: #22c55e;
+  box-shadow: 0 0 14px rgba(34, 197, 94, 0.9);
 }
 
 @layer utilities {
